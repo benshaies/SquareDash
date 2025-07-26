@@ -11,7 +11,6 @@ link_directories("/home/killswitch/raylib/build/raylib")
 # Define source files
 set(SOURCES
     ../main.c
-    ../bullet.c
     ../player.c
 )
 
