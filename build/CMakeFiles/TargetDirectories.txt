@@ -1,3 +1,0 @@
-/home/killswitch/SquareDash/build/CMakeFiles/game.dir
-/home/killswitch/SquareDash/build/CMakeFiles/edit_cache.dir
-/home/killswitch/SquareDash/build/CMakeFiles/rebuild_cache.dir

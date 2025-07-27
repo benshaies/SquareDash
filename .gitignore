@@ -1,0 +1,25 @@
+# Ignore build folder (CMake output)
+build/
+
+# Ignore compiled binaries
+*.o
+*.out
+*.exe
+game
+
+# Ignore dependency info
+*.d
+
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore CMake cache
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+

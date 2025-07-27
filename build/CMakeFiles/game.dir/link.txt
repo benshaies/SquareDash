@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/game.dir/main.c.o CMakeFiles/game.dir/player.c.o -o game   -L/home/killswitch/raylib/build/raylib  -Wl,-rpath,/home/killswitch/raylib/build/raylib -lraylib -lm -lpthread -ldl -lrt -lX11 
