@@ -8,15 +8,17 @@ typedef struct{
     Rectangle rec;
     bool isOnGround;
     float velocityY;
+    float rotaiton;
 
 }Player;
 
-void playerInit(Player *player);
+void playerInit(Player *player, Camera2D *camera);
 
 void playerMovement(Player *player);
 
 void playerCollisions(Player *player);
 
-void drawPlayer(Player *player);
+void drawPlayer(Player *player, Camera2D *camera);
+
 
 #endif

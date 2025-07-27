@@ -1,17 +1,30 @@
 #include <raylib.h>
 #include "player.h"
+#include "level.h"
 
-const int screenWidth = 1750;
-const int screenHeight = 1000;
+const int screenWidth = 1500;
+const int screenHeight = 750;
 
 //Create player variable
 Player player;
+
+//Define camera variable
+Camera2D camera;
+
 
 void draw(){
     BeginDrawing();
 
     ClearBackground(WHITE);
-    drawPlayer(&player);
+
+    BeginMode2D(camera);
+    
+    drawPlayer(&player, &camera);
+
+    drawLevel();
+
+    EndMode2D();
+    
 
     EndDrawing();
 }
@@ -21,7 +34,7 @@ void init(){
     SetTargetFPS(60);
 
     //Player init
-    playerInit(&player);
+    playerInit(&player, &camera);
 }
 
 int main(void){

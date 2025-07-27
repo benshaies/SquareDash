@@ -12,6 +12,7 @@ link_directories("/home/killswitch/raylib/build/raylib")
 set(SOURCES
     ../main.c
     ../player.c
+    ../level.c
 )
 
 # Create executable
