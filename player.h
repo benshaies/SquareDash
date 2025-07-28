@@ -6,9 +6,9 @@ typedef struct{
     Vector2 pos;
     float speed;
     Rectangle rec;
-    bool isOnGround;
     float velocityY;
     float rotaiton;
+    bool isJumping;
 
 }Player;
 

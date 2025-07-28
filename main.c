@@ -11,19 +11,36 @@ Player player;
 //Define camera variable
 Camera2D camera;
 
+//Sprite Texture variable
+Texture2D texture;
+
+//GameStae
+int gameState = 0;
+int menuState = 0;
+
+//Game font
+Font font;
+
+void drawMenu(){
+    DrawTextEx(font, "Square Dash", (Vector2){250, 150}, 60, 2, BLACK);
+}
+
 
 void draw(){
     BeginDrawing();
 
-    ClearBackground(WHITE);
+    ClearBackground(BLUE);
+
 
     BeginMode2D(camera);
-    
+
+    drawLevel(texture);
+        
     drawPlayer(&player, &camera);
 
-    drawLevel();
+    
 
-    EndMode2D();
+    //EndMode2D();
     
 
     EndDrawing();
@@ -35,6 +52,14 @@ void init(){
 
     //Player init
     playerInit(&player, &camera);
+
+    //Load texture
+    texture = LoadTexture("../assets/SquareDashSprites.png");
+
+    //Font
+    font = LoadFontEx("../assets/font.ttf", 150, 0, 0);
+
+
 }
 
 int main(void){

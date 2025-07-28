@@ -2,41 +2,44 @@
 #include <raylib.h>
 #include "stdlib.h"
 #include "stdio.h"
+#include "level.h"
 
 //Stock gravity
 float gravity =  0.85f;
-float jumpPower = -22.5f;
+float jumpPower = -15.0f;
+
+Vector2 spawnPoint = {300, 400};
 
 void playerInit(Player *player, Camera2D *camera){
-    player->pos = (Vector2){300, 800};
+    player->pos = (Vector2){300, 600};
     player->speed = 2.5f;
     player->rec = (Rectangle){300, 800, 50, 50};
-    player->isOnGround = false;
     player->velocityY = 0.0f;
     player->rotaiton = 0.0f;
+    player->isJumping = false;
 
     //Camera init
     camera->target = player->pos;
-    camera->offset = (Vector2){300, 800};
+    camera->offset = (Vector2){300, 600};
     camera->zoom = 1.0f;
 } 
 
 void playerMovement(Player *player){
 
     //Jump code
-    if(IsKeyPressed(KEY_SPACE) && player->isOnGround){
-        player->isOnGround = false;
+    if(IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !player->isJumping && player->velocityY == 0){
+        //player->isOnGround = false;
         player->velocityY = jumpPower;
+        player->isJumping = true;
     }
 
     //Move player forward
-    player->pos.x += 5.0f;
+    player->pos.x += 7.0f;
 
     //Update player stuff
     player->rec.x = player->pos.x;
     player->rec.y = player->pos.y;
      
-
 }
 
 void playerCollisions(Player *player){
@@ -44,20 +47,50 @@ void playerCollisions(Player *player){
     //Checking collsions with ground and adding gravity
     player->pos.y += player->velocityY;
 
-    //Ground check and resetting
-    if(player->pos.y < 725){
-        player->velocityY += gravity;
-        player->isOnGround = false;
+    //Constantly adding gravity no matter what
+    player->velocityY += gravity;
+
+    //Adding rotation effect
+    if(player->isJumping){
         player->rotaiton += 3.5f;
     }
     else{
-        player->rotaiton = 0.0f;
-        player->isOnGround = true;
-        player->velocityY = 0;
-        player->pos.y = 725;
+        player->rotaiton = 0;
     }
 
-    
+    //Check if player falls off
+    if(player->pos.y > 1000){
+        player->pos = spawnPoint;
+    }
+
+    // Level Collision Check
+    for(int y = 0; y < 15; y++){
+        for(int x = 0; x < 250; x++){
+
+            Vector2 bottomPoint = {player->pos.x, player->pos.y+25};
+            Vector2 sidePoint = {player->pos.x + 25, player->pos.y};
+
+            //Ground Check
+            if(level1[y][x] == 0 && CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50})){
+                player->velocityY = 0;
+                player->pos.y = (y*50) - 25;
+                player->isJumping = false;
+            }
+
+            if(level1[y][x] == 0 && CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})){
+                WaitTime(1);
+                player->pos = spawnPoint;
+            }
+
+            if(level1[y][x] == 1 && (CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})||CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50}))){
+                WaitTime(1);
+                player->pos = spawnPoint;
+            }
+
+        }
+    }
+
+    //printf("%f\n", player->velocityY);
 
 }
 
@@ -66,7 +99,10 @@ void drawPlayer(Player *player, Camera2D *camera){
     //Update camera location
     camera->target.x = player->pos.x;
 
-    DrawRectanglePro(player->rec, (Vector2){25, 25}, player->rotaiton, BLUE);
+    DrawCircleV((Vector2){player->pos.x, player->pos.y+25}, 4.0, BLACK);
+    DrawCircleV((Vector2){player->pos.x + 25, player->pos.y}, 4.0, BLACK);
+
+    DrawRectanglePro(player->rec, (Vector2){25, 25}, player->rotaiton, WHITE);
 
 }
 

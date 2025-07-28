@@ -2,9 +2,9 @@
 #define LEVEL_H
 #include "raylib.h"
 
-extern int level1[15][50];
+extern int level1[15][250];
 
-void drawLevel();
+void drawLevel(Texture2D texture);
 
 
 
