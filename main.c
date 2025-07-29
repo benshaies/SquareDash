@@ -24,13 +24,16 @@ Font gameFont;
 //Colors
 Color groundColor = (Color){198, 215, 255, 255};
 Color spikeColor = (Color){147, 56, 56, 255};
-Color backgroundColor = (Color){102, 191, 255, 255}; // light, neutral blue-gray
+Color levelOneColor = (Color){102, 191, 255, 255}; // light, neutral blue-gray
+Color levelTwoColor = (Color){255, 223, 153, 255};
+Color levelThreeColor = (Color){255, 102, 102, 255};
+
 
 
 void drawMenu(){
     BeginDrawing();
 
-    ClearBackground(backgroundColor );
+    ClearBackground(levelOneColor );
 
     Vector2 mousePos = GetMousePosition();
 
@@ -103,18 +106,18 @@ void drawMenu(){
 void draw(){
     BeginDrawing();
 
-    ClearBackground(backgroundColor);
-
-
     BeginMode2D(camera);
 
     if(currentLevel == 1){
+        ClearBackground(levelOneColor);
         drawLevel(texture, level1);
     }
     else if(currentLevel == 2){
+        ClearBackground(levelTwoColor);
         drawLevel(texture, level2);
     }
     else if(currentLevel == 3){
+        ClearBackground(levelThreeColor);
         drawLevel(texture, level3);
     }
 
