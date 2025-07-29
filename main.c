@@ -15,7 +15,7 @@ Camera2D camera;
 Texture2D texture;
 
 //GameStae
-int gameState = 0; // 0 = menu || 1 = playing
+int gameState = 0; // 0 = menu || 1 = playing || -1 = Paused
 int menuState = 0; // 0 = Start menu || 1 = level selector
 int currentLevel = 0; // 0 = None selected
 
@@ -110,7 +110,6 @@ void draw(){
 
     if(currentLevel == 1){
         drawLevel(texture, level1);
-
     }
     else if(currentLevel == 2){
         drawLevel(texture, level2);
@@ -118,6 +117,7 @@ void draw(){
     else if(currentLevel == 3){
         drawLevel(texture, level3);
     }
+
         
     drawPlayer(&player, &camera);
 
@@ -156,7 +156,19 @@ int main(void){
         }
         else if(gameState == 1){
             draw();
-            playerCollisions(&player, level2);
+
+            switch (currentLevel){
+                case 1:
+                    playerCollisions(&player, level1);
+                    break;
+                case 2:
+                    playerCollisions(&player, level2);
+                    break;
+                case 3:
+                    playerCollisions(&player, level3);
+                    break;
+            }
+            
             playerMovement(&player);
         }
         
