@@ -16,7 +16,7 @@ void playerInit(Player *player, Camera2D *camera){
     player->rec = (Rectangle){300, 800, 50, 50};
     player->velocityY = 0.0f;
     player->rotaiton = 0.0f;
-    player->isJumping = false;
+    player->isJumping = true;
 
     //Camera init
     camera->target = player->pos;
@@ -42,7 +42,7 @@ void playerMovement(Player *player){
      
 }
 
-void playerCollisions(Player *player){
+void playerCollisions(Player *player, int currentLevel[15][250]){
 
     //Checking collsions with ground and adding gravity
     player->pos.y += player->velocityY;
@@ -52,7 +52,7 @@ void playerCollisions(Player *player){
 
     //Adding rotation effect
     if(player->isJumping){
-        player->rotaiton += 3.5f;
+        player->rotaiton += 5.0f;
     }
     else{
         player->rotaiton = 0;
@@ -71,18 +71,18 @@ void playerCollisions(Player *player){
             Vector2 sidePoint = {player->pos.x + 25, player->pos.y};
 
             //Ground Check
-            if(level1[y][x] == 0 && CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50})){
+            if(currentLevel[y][x] == 0 && CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50})){
                 player->velocityY = 0;
                 player->pos.y = (y*50) - 25;
                 player->isJumping = false;
             }
 
-            if(level1[y][x] == 0 && CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})){
+            if(currentLevel[y][x] == 0 && CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})){
                 WaitTime(1);
                 player->pos = spawnPoint;
             }
 
-            if(level1[y][x] == 1 && (CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})||CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50}))){
+            if(currentLevel[y][x] == 1 && (CheckCollisionPointRec(sidePoint, (Rectangle){x*50, y*50, 50, 50})||CheckCollisionPointRec(bottomPoint, (Rectangle){x*50, y*50, 50, 50}))){
                 WaitTime(1);
                 player->pos = spawnPoint;
             }
@@ -90,17 +90,12 @@ void playerCollisions(Player *player){
         }
     }
 
-    //printf("%f\n", player->velocityY);
-
 }
 
 void drawPlayer(Player *player, Camera2D *camera){
 
     //Update camera location
     camera->target.x = player->pos.x;
-
-    DrawCircleV((Vector2){player->pos.x, player->pos.y+25}, 4.0, BLACK);
-    DrawCircleV((Vector2){player->pos.x + 25, player->pos.y}, 4.0, BLACK);
 
     DrawRectanglePro(player->rec, (Vector2){25, 25}, player->rotaiton, WHITE);
 

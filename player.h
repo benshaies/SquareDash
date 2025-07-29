@@ -16,7 +16,7 @@ void playerInit(Player *player, Camera2D *camera);
 
 void playerMovement(Player *player);
 
-void playerCollisions(Player *player);
+void playerCollisions(Player *player, int currentLevel[15][250]);
 
 void drawPlayer(Player *player, Camera2D *camera);
 
