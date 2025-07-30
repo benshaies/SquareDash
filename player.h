@@ -9,8 +9,9 @@ typedef struct{
     float velocityY;
     float rotaiton;
     bool isJumping;
-
 }Player;
+
+extern bool musicRestart;
 
 void playerInit(Player *player, Camera2D *camera);
 

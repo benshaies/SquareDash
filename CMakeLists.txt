@@ -4,9 +4,38 @@ project(game C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Manually include and link Raylib
-include_directories("/home/killswitch/raylib/src")
-link_directories("/home/killswitch/raylib/build/raylib")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    # Remove -rdynamic if it exists
+    string(REPLACE "-rdynamic" "" CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+    string(REPLACE "-rdynamic" "" CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+
+    # Point to Windows Raylib includes and libs - update these paths accordingly!
+    include_directories("/home/killswitch/raylib/src")
+    link_directories("/home/killswitch/raylib/build-windows/raylib")
+    set(PLATFORM_LIBS raylib)
+
+    set(PLATFORM_LIBS
+        raylib
+        winmm
+        gdi32
+        opengl32
+        kernel32
+        user32
+    )
+else()
+    # Linux includes and libs
+    include_directories("/home/killswitch/raylib/src")
+    link_directories("/home/killswitch/raylib/build/raylib")
+
+    set(PLATFORM_LIBS
+        raylib
+        m
+        pthread
+        dl
+        rt
+        X11
+    )
+endif()
 
 # Define source files
 set(SOURCES
@@ -18,14 +47,7 @@ set(SOURCES
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Link to Raylib and dependencies
-target_link_libraries(${PROJECT_NAME}
-    raylib
-    m
-    pthread
-    dl
-    rt
-    X11
-)
+# Link libraries
+target_link_libraries(${PROJECT_NAME} ${PLATFORM_LIBS})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

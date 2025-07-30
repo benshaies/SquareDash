@@ -10,6 +10,8 @@ float jumpPower = -15.0f;
 
 Vector2 spawnPoint = {300, 400};
 
+bool musicRestart = false;
+
 
 void playerInit(Player *player, Camera2D *camera){
     player->pos = (Vector2){300, 600};
@@ -63,6 +65,7 @@ void playerCollisions(Player *player, int currentLevel[15][250]){
     //Check if player falls off
     if(player->pos.y > 1000){
         player->pos = spawnPoint;
+        musicRestart = true;
     }
 
     // Level Collision Check
@@ -87,12 +90,14 @@ void playerCollisions(Player *player, int currentLevel[15][250]){
             }
 
             if(currentLevel[y][x] == 0 && CheckCollisionPointRec(sidePoint, currentRec)){
-                WaitTime(1);
+                WaitTime(0.5);
+                musicRestart = true;
                 player->pos = spawnPoint;
             }
 
             if(currentLevel[y][x] == 1 && (CheckCollisionPointRec(sidePoint, currentRec)||CheckCollisionPointRec(bottomPoint, currentRec))){
-                WaitTime(1);
+                WaitTime(0.5);
+                musicRestart = true;
                 player->pos = spawnPoint;
             }
 
@@ -109,6 +114,7 @@ void drawPlayer(Player *player, Camera2D *camera){
 
     DrawRectanglePro(player->rec, (Vector2){25, 25}, player->rotaiton, WHITE);
 
+    //Progress Bar
     DrawRectangleLinesEx((Rectangle){player->pos.x-200, 75, 350, 50}, 4.0f, BLACK);
     DrawRectangle(player->pos.x+5-200,80,350*(player->pos.x/12500),40, WHITE);
 }
